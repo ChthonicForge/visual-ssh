@@ -7,11 +7,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PublishAot>true</PublishAot>
+	<EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
     <InvariantGlobalization>true</InvariantGlobalization>
+	<AssemblyName>vssh</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Spectre.Console" Version="0.51.1" />
+	<Using Include="System.Text.Json.Serialization" />
   </ItemGroup>
 
+    
 </Project>

@@ -1,15 +1,10 @@
 ﻿using Spectre.Console;
-using System.Data;
 using System.Diagnostics;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 
 namespace visualSSH;
-public class Server
-{
-    public string Name { get; set; }
-    public string Host { get; set; }
-    public string User { get; set; }
-};
+
 class Program
 {
     public static List<Server> servers = new();
@@ -25,7 +20,7 @@ class Program
                 {
                     File.Create("connections.json").Dispose();
                 }
-                servers = JsonSerializer.Deserialize<List<Server>>(File.ReadAllText("connections.json"));
+                servers = JsonSerializer.Deserialize<List<Server>>(File.ReadAllText("connections.json"), ServersJsonContext.Default.ListServer);
             }
             catch (Exception e)
             {
@@ -135,7 +130,7 @@ class Program
     static void AddMenu()
     {
         //AnsiConsole.Clear();
-        var menuAddTitle = new Rule("[green] Add New Server[/]");
+        var menuAddTitle = new Spectre.Console.Rule("[green] Add New Server[/]");
         menuAddTitle.Justification = Justify.Left;
         AnsiConsole.Write(menuAddTitle);
 
@@ -151,7 +146,7 @@ class Program
         );
 
         AnsiConsole.Clear();
-        var menuAddConfirmTitle = new Rule("[green] Confirm Connection Details[/]");
+        var menuAddConfirmTitle = new Spectre.Console.Rule("[green] Confirm Connection Details[/]");
         menuAddConfirmTitle.Justification = Justify.Left;
         AnsiConsole.Write(menuAddConfirmTitle);
 
@@ -184,7 +179,7 @@ class Program
     public static void DeleteServer()
     {
         //AnsiConsole.Clear();
-        var deleteTitle = new Rule("[red]Delete Server[/]");
+        var deleteTitle = new Spectre.Console.Rule("[red]Delete Server[/]");
         deleteTitle.Justification = Justify.Left;
         AnsiConsole.Write(deleteTitle);
         AnsiConsole.Markup("[red]Are you sure you want to delete this server?[/]");
@@ -205,7 +200,7 @@ class Program
 
     public static void EditServer()
     {
-        var editTitle = new Rule("[yellow]Edit Server[/]");
+        var editTitle = new Spectre.Console.Rule("[yellow]Edit Server[/]");
         editTitle.Justification = Justify.Left;
         AnsiConsole.Write(editTitle);
 
@@ -235,7 +230,7 @@ class Program
 
     public static void WriteToConnectionsFile()
     {
-        string serializedList = JsonSerializer.Serialize<List<Server>>(servers);
+        string serializedList = JsonSerializer.Serialize<List<Server>>(servers, ServersJsonContext.Default.ListServer);
         try
         {
             string filePath = Path.Combine(Environment.CurrentDirectory, "connections.json");
