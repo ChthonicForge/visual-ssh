@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using visualSSH;
+using visual_ssh.Models;
 
 [JsonSerializable(typeof(List<Server>))]
 internal partial class ServersJsonContext : JsonSerializerContext
