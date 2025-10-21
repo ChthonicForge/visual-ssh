@@ -6,9 +6,16 @@ using visualSSH.Models;
 namespace visualSSH;
 public class App
 {
-    public List<Server> servers = new();
-    public bool firstRun = true;
-    public int selectedIndex = 0;
+    public List<Server> servers;
+    public bool firstRun;
+    public int selectedIndex;
+
+    public App()
+    {
+        this.servers = new();
+        this.firstRun = true;
+        this.selectedIndex = 0;
+    }
 
     public void Run()
     {
@@ -103,7 +110,8 @@ public class App
         WriteToConnectionsFile();
         Environment.Exit(0);
     }
-    static void ConnectToServer(Server server, int port = 22)
+
+    public void ConnectToServer(Server server, int port = 22)
     {
         string sshTarget = $"{server.User}@{server.Host} -p {port}";
         AnsiConsole.MarkupLine($"[yellow]Connecting to[/] {sshTarget}...");
@@ -126,7 +134,7 @@ public class App
         Run();
     }
 
-    static void AddMenu()
+    public void AddMenu()
     {
         //AnsiConsole.Clear();
         var menuAddTitle = new Spectre.Console.Rule("[green] Add New Server[/]");
@@ -157,7 +165,7 @@ public class App
         {
             servers.Add(new Server { Host = hostName, User = userName, Name = displayName });
             WriteToConnectionsFile();
-            Main();
+            Run();
         }
 
         var tryAgain = AnsiConsole.Prompt(new SelectionPrompt<string>()
@@ -172,10 +180,10 @@ public class App
                 AddMenu(); break;
         }
 
-        Main();
+        Run();
     }
 
-    public static void DeleteServer()
+    public void DeleteServer()
     {
         //AnsiConsole.Clear();
         var deleteTitle = new Spectre.Console.Rule("[red]Delete Server[/]");
@@ -197,7 +205,7 @@ public class App
         }
     }
 
-    public static void EditServer()
+    public void EditServer()
     {
         var editTitle = new Spectre.Console.Rule("[yellow]Edit Server[/]");
         editTitle.Justification = Justify.Left;
@@ -227,7 +235,7 @@ public class App
         }
     }
 
-    public static void WriteToConnectionsFile()
+    public void WriteToConnectionsFile()
     {
         string serializedList = JsonSerializer.Serialize<List<Server>>(servers, ServersJsonContext.Default.ListServer);
         try

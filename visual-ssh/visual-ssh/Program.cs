@@ -1,17 +1,19 @@
-﻿using Spectre.Console;
-using System.Diagnostics;
-using System.Text.Json;
-using System.Text.Json.Serialization.Metadata;
-using visualSSH.Models;
-
-namespace visualSSH;
+﻿namespace visualSSH;
 
 class Program
 {
 
     static void Main()
     {
-        var app = new App();
-        app.Run();
+        try
+        {
+            var app = new App();
+            app.Run();
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
     }
 }
